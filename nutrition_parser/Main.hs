@@ -9,20 +9,20 @@ main = do
 	putStrLn "Type the name of the ocr files"
 	filename <- getLine
 	s <- readFile filename
-	cs <- search s
-
-	print cs
+	cs <- search patt s
+	g <- search patt2 s
+	print $ zip cs g
 	
 patt = makeRegexOpts compCaseless execBlank "(total fat|trans fat|sat fat|Sugars|proteins|carb)" :: Regex
+patt2 = makeRegexOpts compCaseless execBlank "\\d+\\s*(mg|g|%)" :: Regex
 
-
-search :: String -> IO [String]
-search "" = return []
-search s = regexec patt s >>= \x -> 
+search :: Regex -> String -> IO [String]
+search _ "" = return []
+search a s = regexec a s >>= \x -> 
 			case x of
 				Left err -> return []
 				Right m -> case m of
 					Nothing -> return []
 					Just (_,match,after,_) -> do
-						f <- search after
+						f <- search a after
 						return $ match : f 

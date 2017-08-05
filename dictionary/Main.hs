@@ -6,7 +6,6 @@ module Main where
 
 
 import System.IO.Streams (InputStream, OutputStream, stdout)
-import qualified System.IO.Streams as Streams
 import qualified Data.ByteString as S
 import qualified Data.ByteString.Char8 as C
 import Data.ByteString.Lazy.Char8 as CL
